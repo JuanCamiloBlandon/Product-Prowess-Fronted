@@ -1,12 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            // Reemplaza con la imagen Docker correcta que contiene npm
-            image 'imagen-product-prowess-frontend'
-            // Puedes definir un label si necesitas un nodo específico
-            // label 'docker-node'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
