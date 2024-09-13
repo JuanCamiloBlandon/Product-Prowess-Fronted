@@ -1,4 +1,12 @@
 pipeline {
+    agent {
+        docker {
+            // Reemplaza con la imagen Docker correcta que contiene npm
+            image 'imagen-product-prowess-frontend'
+            // Puedes definir un label si necesitas un nodo específico
+            // label 'docker-node'
+        }
+    }
 
     stages {
         stage('Checkout') {
@@ -10,13 +18,11 @@ pipeline {
         
         stage('Build') {
             steps {
-                 sh 'docker build -t imagen-product-prowess-frontend .'
-                 
+                // Instala las dependencias y construye la aplicación
+                sh 'node --version'
+                sh 'npm install'
+                sh 'npm run build'
             }
-        }
-
-        stage('Run') {
-            sh 'docker run -d -p 80:80 --name contenedor-product-prowess-frontend imagen-product-prowess-frontend'
         }
         
         stage('Test') {
