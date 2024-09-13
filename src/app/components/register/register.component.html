@@ -1,0 +1,39 @@
+<div class="modal-overlay"></div>
+<div class="modal-container">
+  <div class="circle-icon">
+    <i class="pi pi-times" (click)="closeRegisterModal()"></i>
+  </div>
+  <div class="modal-content">
+    <div class="modal-header text">
+      <h5 class="modal-title">Formulario de Registro</h5>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center mb-3">
+        <div class="avatar-container mr-2">
+          <p-avatar *ngIf="!avatar" icon="pi pi-user" styleClass="mr-2" size="xlarge" shape="circle"></p-avatar>
+          <p-avatar [image]="avatar" styleClass="mr-2" size="xlarge"></p-avatar>
+          <i class="pi pi-user-edit user-icon" (click)="toggleAvatarSelection()"></i>
+        </div>
+        <div>
+          <input type="text" class="form-control wide-input" id="username" [(ngModel)]="username" name="username" placeholder="Nombre Completo" required>
+        </div>
+      </div>
+      <div *ngIf="showAvatarSelection" class="mb-3">
+        <app-avatars (avatarSelected)="onAvatarSelected($event)"></app-avatars>
+      </div>
+      <div class="mb-3">
+        <input type="email" class="form-control short-input" id="email" [(ngModel)]="email" name="email" placeholder="Correo" required>
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control short-input" id="password" [(ngModel)]="password" name="password" placeholder="Contraseña" required>
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control text-description" id="bio" [(ngModel)]="bio" name="bio" placeholder="Biografía" required></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary btn-create" (click)="registerUser()" [disabled]="!isFormValid">Registrarse</button>
+    </div>
+  </div>
+</div>
+<p-toast position="bottom-right"></p-toast>

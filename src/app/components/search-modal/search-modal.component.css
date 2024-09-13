@@ -1,0 +1,204 @@
+@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+.container{
+    position: absolute;
+}
+
+.circle-icon {
+    position: absolute;
+    top: 83px;
+    left: 355px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.circle-icon i{
+    font-size: 15px;
+    color: #c200ff;
+    font-weight: bold;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Kanit', sans-serif;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.modal-content {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    width: 550px;
+    height: 350px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.search-advance-container {
+  padding: 20px;
+  font-family: 'Kanit', sans-serif;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar .form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: calc(33.333% - 20px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-avatar {
+  margin-bottom: 15px;
+}
+
+.product-details {
+  text-align: center;
+}
+
+.product-details h5 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.product-details p {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.product-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.product-actions .btn {
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #1976D2;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f;
+}
+
+.card{
+  border-radius: 3px;
+}
+
+.p-button {
+  border-radius: 10px;
+}
+
+h2{
+  text-align: center;
+  color: #c200ff;
+
+}
+
+.p-button {
+  top: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 41px;
+  width: 290px;
+}
+
+button {
+  margin-right: 5px;
+  padding: 10px 20px;
+  position: relative;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #C70039;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin: 0 10px;
+  font-family: "Kanit", sans-serif;
+  width: 84px;
+  right: -165px;
+  top: -15px;
+}
+
+::ng-deep .calendar{
+  position: relative;
+  top: 30px;
+  border-radius: 5px;
+  width: 170px !important;  
+}
+
+
+::ng-deep .small-calendar .p-datepicker {
+  transform: scale(0.8) !important;
+  transform-origin: center !important;
+}
+
+::ng-deep .small-calendar .p-inputtext {
+  font-size: 0.85rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+::ng-deep .small-calendar .p-datepicker-header {
+  padding: 0.25rem !important;
+}
+
+::ng-deep .small-calendar .p-datepicker-calendar td {
+  font-size: 0.75rem !important;
+  padding: 0.25rem !important;
+}

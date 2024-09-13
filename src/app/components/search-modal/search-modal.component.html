@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="circle-icon">
+        <i class="pi pi-times" (click)="closeModal()"></i>
+    </div>
+    <div class="modal-overlay" >
+        <div class="modal-content">
+            <h2>Elige una opción de búsqueda</h2>
+            <div class="flex justify-content-center  p-button">
+                <p-toast />
+                <p-button (click)="show()" icon="pi pi-search" label="Selecciona un producto" pRipple />
+            </div>
+            <div class="calendar-container calendar">
+                <label for="buttondisplay" class="font-bold block mb-2">Selecciona una fecha</label>
+                <p-calendar 
+                    [(ngModel)]="date1" 
+                    [showIcon]="true" 
+                    inputId="buttondisplay" 
+                    [showOnFocus]="false"
+                    class="small-calendar">
+                </p-calendar>
+            </div>
+            <button *ngIf="date1">Buscar</button>
+        </div>
+    </div>
+</div>

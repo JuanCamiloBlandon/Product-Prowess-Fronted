@@ -1,0 +1,32 @@
+<nav class="navbar">
+    <div class="container-fluid ">
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                (click)="toggleSearchModal()">
+        </form>
+        <div class="navbar-content">
+            Productos
+        </div>
+    </div>
+</nav>
+<div class="blur-background" *ngIf="showSearchModal" >
+<app-search-modal  (close)="toggleSearchModal()" ></app-search-modal>
+</div>
+<div class="container">
+    <div [@fadeAnimation]="showForm ? 'hidden': 'visible'" class="content">
+        <p class="public-text">Bienvenido a Product Prowess</p>
+        <p class="text-blue">Aquí puedes</p>
+        <p class="text-price">publicar tus productos tecnológicos.</p>
+        <button (click)="toggleLoginModal()">Ingresar</button>
+        <button (click)="toggleRegisterModal()">Registrarse</button>
+    </div>
+    <div class="imageHome">
+        <img src="assets/image/homepage.png" alt="homepage">
+    </div>
+    <div class="blur-background" *ngIf="showLoginModal">
+        <app-login [showLogin]="showLoginModal" (close)="closeLoginModal()"></app-login>
+    </div>
+    <div class="blur-background" *ngIf="showRegisterModal">
+        <app-register [showModal]="showRegisterModal" (close)="closeRegisterModal()"></app-register>
+    </div>
+</div>
