@@ -17,31 +17,27 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // construye la imagen Docker
+                    // Construye la imagen Docker
                     bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 script {
                     // Detener el contenedor si está en ejecución
-                    bat """
-                        docker stop contenedor-product-prowess-frontend || true
-                    """
+                    bat "docker stop contenedor-product-prowess-frontend || exit 0"
                     
                     // Eliminar el contenedor si existe
-                    bat """
-                        docker rm contenedor-product-prowess-frontend || true
-                    """
+                    bat "docker rm contenedor-product-prowess-frontend || exit 0"
                     
                     // Crear y ejecutar el nuevo contenedor
-                    bat """
-                        docker run -d --name contenedor-product-prowess-frontend -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}
-                    """
+                    bat "docker run -d --name contenedor-product-prowess-frontend -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
+    }
 
     post {
         always {
