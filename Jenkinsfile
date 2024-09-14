@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "product-prowess-frontend"
         DOCKER_TAG = "latest"
+        DOCKER_CONTAINER = "contenedor-product-prowess-frontend"
     }
 
     stages {
@@ -27,13 +28,13 @@ pipeline {
             steps {
                 script {
                     // Detener el contenedor si está en ejecución
-                    bat "docker stop contenedor-product-prowess-frontend || exit 0"
+                    bat "docker stop ${DOCKER_CONTAINER} || exit 0"
                     
                     // Eliminar el contenedor si existe
-                    bat "docker rm contenedor-product-prowess-frontend || exit 0"
+                    bat "docker rm ${DOCKER_CONTAINER} || exit 0"
                     
                     // Crear y ejecutar el nuevo contenedor
-                    bat "docker run -d --name contenedor-product-prowess-frontend -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    bat "docker run -d --name ${DOCKER_CONTAINER} -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
