@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Construye la imagen Docker
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                 }
             }
         }
@@ -28,13 +28,13 @@ pipeline {
             steps {
                 script {
                     // Detener el contenedor si está en ejecución
-                    sh "docker stop ${DOCKER_CONTAINER} || exit 0"
+                    bat "docker stop ${DOCKER_CONTAINER} || exit 0"
                     
                     // Eliminar el contenedor si existe
-                    sh "docker rm ${DOCKER_CONTAINER} || exit 0"
+                    bat "docker rm ${DOCKER_CONTAINER} || exit 0"
                     
                     // Crear y ejecutar el nuevo contenedor
-                    sh "docker run -d --name ${DOCKER_CONTAINER} -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    bat "docker run -d --name ${DOCKER_CONTAINER} -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline {
     post {
         always {
             // Limpia los contenedores y las imágenes después de la ejecución
-            sh 'docker system prune -f'
+            bat 'docker system prune -f'
         }
         success {
             echo 'Build and deployment successful!'
