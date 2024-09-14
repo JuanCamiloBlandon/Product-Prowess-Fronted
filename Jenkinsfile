@@ -27,10 +27,10 @@ pipeline {
             steps {
                 script {
                     // Detener el contenedor si está en ejecución
-                    bat "docker stop contenedor-product-prowess-frontend || true"
+                    bat "docker stop contenedor-product-prowess-frontend || exit 0"
                     
                     // Eliminar el contenedor si existe
-                    bat "docker rm contenedor-product-prowess-frontend || true"
+                    bat "docker rm contenedor-product-prowess-frontend || exit 0"
                     
                     // Crear y ejecutar el nuevo contenedor
                     bat "docker run -d --name contenedor-product-prowess-frontend -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
