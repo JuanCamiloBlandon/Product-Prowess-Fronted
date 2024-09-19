@@ -42,7 +42,7 @@ pipeline {
 
     post {
         always {
-            // Limpia los contenedores y las imágenes después de la ejecución
+            // Limpia los contenedores y las imágenes después de la ejecuciónn
             bat 'docker system prune -f'
         }
         success {
