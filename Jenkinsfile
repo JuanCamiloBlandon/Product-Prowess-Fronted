@@ -3,77 +3,85 @@ pipeline {
 
     environment {
         ACR_NAME = "acrterraformproductprowess"  // Nombre del ACR (en minúsculas)
-        ACR_LOGIN_SERVER = "${ACR_NAME}.azurecr.io"  // Login Server del ACR
+        ACR_LOGIN_SERVER = "acrterraformproductprowess.azurecr.io"  // Login Server del ACR
         DOCKER_IMAGE = "product-prowess-frontend"
         DOCKER_TAG = "latest"
         DOCKER_CONTAINER = "contenedor-product-prowess-frontend"
+    }
 
-        stages {
-            stage('Build Docker Image') {
-                steps {
-                    script {
-                        // Construir la imagen Docker desde el Dockerfile en el directorio actual
-                        sh "docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ."
-                    }
-                }
-            }
-
-            stage('Login to ACR') {
-                steps {
-                    script {
-                        // Iniciar sesión en el Azure Container Registry (ACR)
-                        sh "az acr login --name ${ACR_NAME}"
-                    }
-                }
-            }
-
-            stage('Tag Docker Image') {
-                steps {
-                    script {
-                        // Etiquetar la imagen con el servidor de ACR
-                        sh "docker tag ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
-                    }
-                }
-            }
-
-            stage('Push Docker Image to ACR') {
-                steps {
-                    script {
-                        // Hacer push de la imagen al ACR
-                        sh "docker push ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
-                    }
-                }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'feature/camilo', url: 'https://github.com/JuanCamiloBlandon/Product-Prowess-Frontend.git'
             }
         }
-        /*
-        stage('Deploy') {
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Detener el contenedor si está en ejecución
-                    bat "docker stop ${DOCKER_CONTAINER} || exit 0"
-                    
-                    // Eliminar el contenedor si existe
-                    bat "docker rm ${DOCKER_CONTAINER} || exit 0"
-                    
-                    // Crear y ejecutar el nuevo contenedor
-                    bat "docker run -d --name ${DOCKER_CONTAINER} -p 80:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                }
+            }
+        }
+
+        stage('Login to ACR') {
+            steps {
+                script {
+                    bat "az acr login --name ${ACR_NAME}"
+                }
+            }
+        }
+
+        stage('Tag Docker Image') {
+            steps {
+                script {
+                    bat "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE}:${DOCKER_TAG}"
+                }
+            }
+        }
+
+        stage('Push Docker Image to ACR') {
+            steps {
+                script {
+                    bat "docker push ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE}:${DOCKER_TAG}"
+                }
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                script {
+                    bat "terraform init"
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    bat "terraform plan -out=tfplan"
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    bat "terraform apply -auto-approve"
                 }
             }
         }
     }
-    */
 
-        post {
-            always {
-                bat 'docker system prune -f'
-            }
-            success {
-                echo 'Build and deployment successful!'
-            }
-            failure {
-                echo 'Build or deployment failed!'
-            }
+    post {
+        always {
+            bat 'docker system prune -f'
+        }
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build or deployment failed!'
         }
     }
-
 }
