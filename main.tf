@@ -27,18 +27,8 @@ data "azurerm_container_registry" "existing" {
 
 resource "null_resource" "docker_push" {
   provisioner "local-exec" {
-    command = <<EOT
-      echo "Iniciando sesión en ACR..."
-      az acr login --name ${data.azurerm_container_registry.existing.name}
-
-      echo "Etiquetando la imagen Docker..."
-      docker tag product-prowess-frontend ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
-
-      echo "Haciendo push de la imagen Docker..."
-      docker push ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
-    EOT
+    command = "echo Iniciando sesión en ACR... && az acr login --name ${data.azurerm_container_registry.existing.name} && echo Etiquetando la imagen Docker... && docker tag product-prowess-frontend ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend && echo Haciendo push de la imagen Docker... && docker push ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend"
   }
-
   depends_on = [data.azurerm_container_registry.existing]
 }
 
