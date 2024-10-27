@@ -40,10 +40,6 @@ resource "null_resource" "docker_push" {
   }
 
   depends_on = [data.azurerm_container_registry.existing]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
 }
 
 
