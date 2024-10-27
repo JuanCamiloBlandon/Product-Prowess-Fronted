@@ -14,7 +14,7 @@ pipeline {
                 git branch: 'feature/camilo', url: 'https://github.com/JuanCamiloBlandon/Product-Prowess-Frontend.git'
             }
         }
-      
+        /*
         stage('Build Docker Image') {
             steps {
                 script {
@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-
+        */
         stage('Terraform Init') {
             steps {
                 script {
