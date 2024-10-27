@@ -4,12 +4,8 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0.2"
     }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
   }
-  
+
   required_version = ">= 1.1.0"
 }
 
@@ -28,32 +24,28 @@ data "azurerm_container_registry" "existing" {
   resource_group_name = data.azurerm_resource_group.existing.name
 }
 
-provider "docker" {
-  registry_auth {
-    address  = data.azurerm_container_registry.existing.login_server
-    username = data.azurerm_container_registry.existing.admin_username
-    password = data.azurerm_container_registry.existing.admin_password
+/*
+resource "null_resource" "docker_push" {
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "Iniciando sesión en ACR..."
+      az acr login --name ${data.azurerm_container_registry.existing.name}
+
+      echo "Etiquetando la imagen Docker..."
+      docker tag product-prowess-frontend ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
+
+      echo "Haciendo push de la imagen Docker..."
+      docker push ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
+    EOT
+  }
+
+  depends_on = [data.azurerm_container_registry.existing]
+
+  triggers = {
+    always_run = "${timestamp()}"
   }
 }
-
-locals {
-  image_name = "product-prowess-frontend:latest"
-}
-
-resource "docker_image" "init_app" {
-  name = "${data.azurerm_container_registry.existing.login_server}/${local.image_name}"
-  keep_locally = false
-  
-  build {
-    no_cache = true
-    context = "${path.cwd}"
-  }
-}
-
-resource "docker_registry_image" "push_image_to_acr" {
-  name          = docker_image.init_app.name
-  keep_remotely = false
-}
+*/
 
 
 resource "azurerm_container_group" "aci" {
@@ -80,7 +72,7 @@ resource "azurerm_container_group" "aci" {
     password = data.azurerm_container_registry.existing.admin_password
   }
 
-  depends_on = [docker_registry_image.push_image_to_acr,data.azurerm_container_registry.existing]
+  depends_on = [null_resource.docker_push,data.azurerm_container_registry.existing]
 
 }
 
