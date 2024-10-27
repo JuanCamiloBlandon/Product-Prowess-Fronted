@@ -23,6 +23,31 @@ pipeline {
             }
         }
 
+        stage('Terraform Init') {
+            steps {
+                script {
+                    bat "terraform init"
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    bat "terraform plan -out=tfplan"
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    bat "terraform apply -auto-approve"
+                }
+            }
+        }
+    }
+        /*
         stage('Deploy') {
             steps {
                 script {
@@ -38,6 +63,7 @@ pipeline {
             }
         }
     }
+    */
 
     post {
         always {
