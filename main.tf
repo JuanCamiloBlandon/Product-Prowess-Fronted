@@ -46,7 +46,7 @@ resource "docker_image" "init_app" {
   
   build {
     no_cache = true
-    context = "${path.cwd}/init-app"
+    context = "${path.cwd}"
   }
 }
 
