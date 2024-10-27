@@ -39,10 +39,8 @@ resource "null_resource" "docker_push" {
     EOT
   }
 
-  # Definir la dependencia para asegurar que el ACR esté disponible antes del push
   depends_on = [data.azurerm_container_registry.existing]
 
-  # Uso de triggers para forzar la reejecución cada vez
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -74,6 +72,8 @@ resource "azurerm_container_group" "aci" {
     username = data.azurerm_container_registry.existing.admin_username
     password = data.azurerm_container_registry.existing.admin_password
   }
+
+  depends_on = [null_resource.docker_push,data.azurerm_container_registry.existing]
 
 }
 
