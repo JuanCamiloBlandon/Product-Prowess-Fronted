@@ -28,15 +28,21 @@ data "azurerm_container_registry" "existing" {
 resource "null_resource" "docker_push" {
   provisioner "local-exec" {
     command = <<EOT
-        az acr login --name ${data.azurerm_container_registry.existing.name}
-        docker tag product-prowess-frontend ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
-        docker push ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
+      echo "Iniciando sesión en ACR..."
+      az acr login --name ${data.azurerm_container_registry.existing.name}
+
+      echo "Etiquetando la imagen Docker..."
+      docker tag product-prowess-frontend ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
+
+      echo "Haciendo push de la imagen Docker..."
+      docker push ${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend
     EOT
   }
-  
 
+  # Definir la dependencia para asegurar que el ACR esté disponible antes del push
   depends_on = [data.azurerm_container_registry.existing]
 
+  # Uso de triggers para forzar la reejecución cada vez
   triggers = {
     always_run = "${timestamp()}"
   }
