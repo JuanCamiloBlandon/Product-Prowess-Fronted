@@ -1,12 +1,11 @@
 pipeline {
     agent any
-    //Prueba webhook
     environment {
         ACR_NAME = "acrterraformproductprowess"
         ACR_LOGIN_SERVER = "acrterraformproductprowess.azurecr.io"
         DOCKER_IMAGE = "product-prowess-frontend"
         DOCKER_TAG = "latest"
-        DOCKER_CONTAINER = "contenedor-product-prowess-frontend"
+        IMAGE_VERSION = "" // Variable para versión dinámica
     }
 
     stages {
@@ -24,50 +23,24 @@ pipeline {
             }
         }
 
-        stage('Login to ACR') {
-            steps {
-                script {
-                    bat "az acr login --name ${ACR_NAME}"
-                }
-            }
-        }
-
-        stage('Tag Docker Image') {
-            steps {
-                script {
-                    bat "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE}:${DOCKER_TAG}"
-                }
-            }
-        }
-
         stage('Push Docker Image to ACR') {
             steps {
                 script {
+                    bat "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE}:${DOCKER_TAG}"
                     bat "docker push ${ACR_LOGIN_SERVER}/${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
 
-        stage('Terraform Init') {
+        stage('Apply Terraform') {
             steps {
                 script {
-                    bat "terraform init"
-                }
-            }
-        }
-
-        stage('Terraform Plan') {
-            steps {
-                script {
-                    bat "terraform plan -out=tfplan"
-                }
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
-                script {
-                    bat "terraform apply -auto-approve"
+                    // Generar un valor aleatorio o timestamp para forzar cambios en Terraform
+                    env.IMAGE_VERSION = UUID.randomUUID().toString()
+                    withEnv(["IMAGE_VERSION=${env.IMAGE_VERSION}"]) {
+                        bat 'terraform init'
+                        bat 'terraform apply -var "image_version=${IMAGE_VERSION}" -auto-approve'
+                    }
                 }
             }
         }
@@ -76,12 +49,6 @@ pipeline {
     post {
         always {
             bat 'docker system prune -f'
-        }
-        success {
-            echo 'Build and deployment successful!'
-        }
-        failure {
-            echo 'Build or deployment failed!'
         }
     }
 }
