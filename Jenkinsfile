@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        ACR_NAME = "acrterraformproductprowess"  // Nombre del ACR (en minúsculas)
-        ACR_LOGIN_SERVER = "acrterraformproductprowess.azurecr.io"  // Login Server del ACR
+        ACR_NAME = "acrterraformproductprowess"
+        ACR_LOGIN_SERVER = "acrterraformproductprowess.azurecr.io"
         DOCKER_IMAGE = "product-prowess-frontend"
         DOCKER_TAG = "latest"
         DOCKER_CONTAINER = "contenedor-product-prowess-frontend"
