@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginService {
 
-  private apiUrl = 'http://localhost:3000/api/v1/auth/logIn';
+  private apiUrl = 'http://52.250.34.15:3000/api/v1/auth/logIn';
 
   constructor(
     private http: HttpClient,

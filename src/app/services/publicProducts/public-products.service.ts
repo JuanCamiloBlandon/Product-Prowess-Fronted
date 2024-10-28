@@ -16,7 +16,7 @@ interface ApiResponse {
 })
 export class PublicProductsService {
 
-  private baseUrl = 'http://localhost:3000/api/v1'
+  private baseUrl = 'http://52.250.34.15:3000/api/v1'
 
   constructor(
     private http: HttpClient
