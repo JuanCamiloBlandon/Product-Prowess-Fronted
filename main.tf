@@ -28,7 +28,7 @@ resource "azurerm_container_group" "aci" {
 
   container {
     name   = "my-container"
-    image  = "${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend:latest" # Tag latest
+    image  = "${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend:latest"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -37,9 +37,9 @@ resource "azurerm_container_group" "aci" {
       protocol = "TCP"
     }
 
-    environment_variables {
+    environment_variable {
       name  = "IMAGE_VERSION"
-      value = var.image_version # Variable para forzar el cambio
+      value = var.image_version
     }
   }
 
