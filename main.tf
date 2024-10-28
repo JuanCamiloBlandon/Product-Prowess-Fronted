@@ -5,19 +5,29 @@ terraform {
       version = "~> 3.0.2"
     }
   }
+
+  required_version = ">= 1.1.0"
 }
 
 provider "azurerm" {
   features {}
 }
 
+
 data "azurerm_resource_group" "existing" {
   name = "TerraformResourceGroup"
 }
 
+
 data "azurerm_container_registry" "existing" {
   name                = "acrterraformproductprowess"
   resource_group_name = data.azurerm_resource_group.existing.name
+}
+
+resource "null_resource" "docker_push" {
+  provisioner "local-exec" {
+    command = "echo 'Docker image pushed to ACR'"
+  }
 }
 
 resource "azurerm_container_group" "aci" {
@@ -28,18 +38,13 @@ resource "azurerm_container_group" "aci" {
 
   container {
     name   = "my-container"
-    image  = "${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend:latest" # Tag latest
+    image  = "${data.azurerm_container_registry.existing.login_server}/product-prowess-frontend:latest"
     cpu    = "0.5"
     memory = "1.5"
 
     ports {
       port     = 80
       protocol = "TCP"
-    }
-
-    environment_variables {
-      name  = "IMAGE_VERSION"
-      value = var.image_version # Variable para forzar el cambio
     }
   }
 
@@ -49,9 +54,7 @@ resource "azurerm_container_group" "aci" {
     password = data.azurerm_container_registry.existing.admin_password
   }
 
-  depends_on = [data.azurerm_container_registry.existing]
+  depends_on = [null_resource.docker_push,data.azurerm_container_registry.existing]
+
 }
 
-variable "image_version" {
-  type = string
-}
